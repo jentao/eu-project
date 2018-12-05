@@ -1,0 +1,91 @@
+#This is where we are going to put functions to manipulate data
+
+
+library(shiny)
+library(R.utils)
+library(data.table)
+
+library(dplyr)
+
+setwd("~/Desktop/Info201HW/eu-project/eu-project/data")
+
+data_projects <- data.table::fread("~/Desktop/Info201HW/eu-project/eu-project/data/projects.csv")
+data_org <-data.table::fread("~/Desktop/Info201HW/eu-project/eu-project/data/organizations.csv")
+
+
+##function that sorts into new dataframe by sustainable food projects
+## does this by taking all project data and filtering by topic for ones that start with
+## The SFS tag
+proj_sfs<- filter(data_projects, like(topics, 'SFS') ) %>%
+  select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
+         endDate, projectUrl, objective, totalCost,
+         ecMaxContribution, call, fundingScheme,
+         coordinator, coordinatorCountry, participants,
+         participantCountries, subjects)
+
+
+##function that sorts into new dataframe by low carbon projects
+## does this by taking all project data and filtering by topic for ones that start with
+## The LC tag
+
+proj_LC <-filter(data_projects, like(topics, 'LC') ) %>%
+  select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
+         endDate, projectUrl, objective, totalCost,
+         ecMaxContribution, call, fundingScheme,
+         coordinator, coordinatorCountry, participants,
+         participantCountries, subjects)
+
+
+##this is a function where you put in a country code as a string from 
+## this list https://ec.europa.eu/eurostat/statistics-explained/index.php/Tutorial:Country_codes_and_protocol_order 
+## and it will filter to a data fram that only contains projects that that chosen country particpates in
+
+country_filter <- function(cnt){
+   fil_cnt_data <-filter(data_projects, like(participantCountries, cnt) ) %>%
+     select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
+            endDate, projectUrl, objective, totalCost,
+            ecMaxContribution, call, fundingScheme,
+            coordinator, coordinatorCountry, participants,
+            participantCountries, subjects) 
+}
+
+## test i wrote to make sure my filter funciton worked
+uk_fil<-country_filter('UK')
+
+# gets rid of commas in costs and converts the cost column to workable number format\
+# for both the low carbon proects and the Sustainable food projects
+proj_LC$totalCost<-sub(",", ".", proj_LC$totalCost)
+proj_LC$totalCost<-as.numeric(proj_LC$totalCost)
+proj_LC$ecMaxContribution<-sub(",", ".", proj_LC$ecMaxContribution)
+proj_LC$ecMaxContribution<-as.numeric(proj_LC$ecMaxContribution)
+
+
+proj_sfs$totalCost<-sub(",", ".", proj_sfs$totalCost)
+proj_sfs$totalCost<-as.numeric(proj_sfs$totalCost)
+proj_sfs$ecMaxContribution<-sub(",", ".", proj_sfs$ecMaxContribution)
+proj_sfs$ecMaxContribution<-as.numeric(proj_sfs$ecMaxContribution)
+
+
+
+# calculations to get some cost data on the low carbon projects
+average_LC_cost <-mean(proj_LC$totalCost)
+max_LC_cost <- max(proj_LC$totalCost)
+min_LC_cost <- min(proj_LC$totalCost)
+
+# calculations to get some cost data on the sustainable food projects
+average_SFS_cost <-mean(proj_sfs$totalCost)
+max_SFS_cost <- max(proj_sfs$totalCost)
+min_SFS_cost <- min(proj_sfs$totalCost)
+
+
+  
+
+
+
+
+
+
+
+
+
+
