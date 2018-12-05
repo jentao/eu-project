@@ -28,15 +28,16 @@ proj_by_tag <- function(tag){
 }
 
 ## test
-proj_LC <- proj_by_tag("LC")
-proj_sfs <- proj_by_tag("SFS")
+#proj_LC <- proj_by_tag("LC")
+#proj_sfs <- proj_by_tag("SFS")
 
 ## this is a function where you put in a country code as a string from 
 ## this list https://ec.europa.eu/eurostat/statistics-explained/index.php/Tutorial:Country_codes_and_protocol_order 
 ## and it will filter to a data fram that only contains projects that that chosen country particpates in
 
 country_filter <- function(cnt, data){
-   fil_cnt_data <-filter(data, like(participantCountries, cnt) ) %>%
+   fil_cnt_data <- data %>% 
+     filter(like(participantCountries, cnt) ) %>%
      select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
             endDate, projectUrl, objective, totalCost,
             ecMaxContribution, call, fundingScheme,
@@ -45,7 +46,7 @@ country_filter <- function(cnt, data){
 }
 
 ## test i wrote to make sure my filter funciton worked
-uk_fil<-country_filter('UK', proj_LC)
+#uk_fil<-country_filter('UK', proj_LC)
 
 ## calculations to get some cost data
 ## return a list of avg, max, and min
@@ -63,7 +64,7 @@ cost_summary <- function(data){
 
 
 
-
+if(FALSE){
 Belgium_part <-country_filter('BE')
 Bulgaria_part <-country_filter('BG')
 Czech_Republic_part  <-country_filter('CZ')
@@ -92,6 +93,7 @@ Slovakia_part	<-country_filter('SK')
 Finland_part	<-country_filter('FI')
 Sweden_part	<-country_filter('SE')
 United_Kingdom_part <-country_filter('UK')
+}
 
 eu_states <- c('Belgium','Bulgaria','Czech Republic','Denmark','Germany',
               'Estonia','Ireland','Greece','Spain','France',
