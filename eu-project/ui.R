@@ -10,6 +10,8 @@
 library(shiny)
 library(shinythemes)
 
+library(dplyr)
+library(ggplot2)
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   theme = shinytheme("cosmo"),
@@ -27,7 +29,22 @@ shinyUI(fluidPage(
                         )
                       )
              ),
-             tabPanel("Energy projects"
+             tabPanel("Participation",
+                      sidebarLayout(
+                        sidebarPanel(
+                          
+
+  selectInput("selYear", label = "Select Year", 
+              choices = c("Year 2014", "Year 2015",
+                             "Year 2016","Year 2017",
+                             "Year 2018", "Year 2019"), selected = "Year 2014")
+                          
+                        ),
+                        mainPanel(
+                          plotOutput("plot1", click = "plot_click"),
+                         textOutput("selected_var")
+                        )
+                      )
                       
              )
   )

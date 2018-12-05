@@ -80,7 +80,8 @@ min_SFS_cost <- min(proj_sfs$totalCost)
 
 
 
-
+## creates a seperate dataframe for each country that contains all the projects
+## the country particpates in
 Belgium_part <-country_filter('BE')
 Bulgaria_part <-country_filter('BG')
 Czech_Republic_part  <-country_filter('CZ')
@@ -110,6 +111,8 @@ Finland_part	<-country_filter('FI')
 Sweden_part	<-country_filter('SE')
 United_Kingdom_part <-country_filter('UK')
 
+
+## plain list of strings of EU countries
 eu_states <- c('Belgium','Bulgaria','Czech Republic','Denmark','Germany',
               'Estonia','Ireland','Greece','Spain','France',
               'Croatia','Italy','Cyprus','Latvia','Lithuania',
@@ -120,6 +123,7 @@ eu_states <- c('Belgium','Bulgaria','Czech Republic','Denmark','Germany',
 
 ## this function takes in a year and data frame and fiters out the 
 ## dataframe for only projects that that in the input year
+
 year_filter <- function(year, in_df){
   fil_cnt_data <-filter(in_df, like(startDate, year) ) %>%
     select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
@@ -129,8 +133,38 @@ year_filter <- function(year, in_df){
            participantCountries, subjects) 
 }
 
-uk_fil_datfill <- year_filter('2016', uk_fil)
+#uk_fil_datfill <- year_filter('2016', uk_fil)
+#befil_datfill_14 <- year_filter('2014', Belgium_part)
 
+
+## the is a list of data frams by eu country, got from using country filter
+eu_states_dfram <- list(Belgium_part,
+                      Bulgaria_part, Czech_Republic_part, Denmark_part, Germany_part , Estonia_part,
+                     Ireland_part,Greece_part, Spain_part  ,France_part ,Croatia_part ,
+                     Italy_part, Cyprus_part	,Latvia_part ,Lithuania_part ,Luxembourg_part , Hungary_part ,
+                     Malta_part , Netherlands_part, Austria_part 	, Poland_part   ,Portugal_part	,
+                     Romania_part	,	Slovenia_part ,	Slovakia_part	, Finland_part	, Sweden_part	, 
+                     United_Kingdom_part )
+
+year_fun <-function(yr){
+  
+  num_vec <- c(1:28)
+  dat_name <- paste("")
+  
+  for (i in 1:28) {
+    num_vec[i] <- as.integer(nrow(year_filter(yr, eu_states_dfram[[i]]  )))
+  }
+  
+  my_data_dne <- data.frame(eu_states, num_vec, stringsAsFactors = FALSE)
+  
+} 
+
+part_year_2014<- year_fun('2014')
+part_year_2015<- year_fun('2015')
+part_year_2016<- year_fun('2016')
+part_year_2017<- year_fun('2017')
+part_year_2018<- year_fun('2018')
+part_year_2019<- year_fun('2019')
 
 
   
