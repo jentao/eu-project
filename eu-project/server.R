@@ -9,7 +9,6 @@
 
 library(shiny)
 library(R.utils)
-library(shinythemes)
 library(ggplot2)
 library(grid)
 library(rworldmap)

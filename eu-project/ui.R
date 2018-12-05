@@ -11,8 +11,6 @@ library(shiny)
 library(shinythemes)
 library(leaflet)
 
-library(dplyr)
-library(ggplot2)
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   theme = shinytheme("cosmo"),
@@ -59,7 +57,19 @@ shinyUI(fluidPage(
                         tags$li("Christine Zhang")
                       )
              ),
-<<<<<<< HEAD
+             tabPanel("Funding by Topic",
+                      titlePanel("Topic Funding by Country"),
+                      p("This map shows project funding data by country.
+                        The project topic can be selected with the drop down menu.
+                        Hovering over a country will display average, max, and min funding
+                        in euro."),
+                      selectInput("topic", "Topic:",
+                                  c("Low Carbon" = "LC",
+                                    "Sustainable Food" = "SFS")
+                      ),
+                      
+                      leafletOutput("distPlot")
+                      ),
              tabPanel("Participation",
                       sidebarLayout(
                         sidebarPanel(
@@ -76,23 +86,6 @@ shinyUI(fluidPage(
                             textOutput("selected_var")
                           )
                       )
-=======
-             tabPanel("Funding by Topic",
-                      titlePanel("Topic Funding by Country"),
-                      p("This map shows project funding data by country.
-                        The project topic can be selected with the drop down menu.
-                        Hovering over a country will display average, max, and min funding
-                        in euro."),
-                      selectInput("topic", "Topic:",
-                                  c("Low Carbon" = "LC",
-                                    "Sustainable Food" = "SFS")
-                                  ),
-                      
-                      leafletOutput("distPlot")
-             ),
-             tabPanel("Energy projects"
->>>>>>> jen-feature
-                      
              )
   )
 ))
