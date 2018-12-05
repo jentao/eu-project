@@ -134,10 +134,4 @@ shinyServer(function(input, output) {
           substr(input$selYear, 5, 8))
     
   })
-  
-  
-  
-  
-  
-  
 })
