@@ -78,6 +78,61 @@ max_SFS_cost <- max(proj_sfs$totalCost)
 min_SFS_cost <- min(proj_sfs$totalCost)
 
 
+
+
+
+Belgium_part <-country_filter('BE')
+Bulgaria_part <-country_filter('BG')
+Czech_Republic_part  <-country_filter('CZ')
+Denmark_part    <-country_filter('DK')
+Germany_part <-country_filter('DE')
+Estonia_part	<-country_filter('EE')
+Ireland_part <-country_filter('IE')
+Greece_part <-country_filter('EL')
+Spain_part <-country_filter('ES')
+France_part <-country_filter('FR')
+Croatia_part <-country_filter('HR')
+Italy_part   <-country_filter('IT')
+Cyprus_part	<-country_filter('CY') 
+Latvia_part <-country_filter('LV')
+Lithuania_part <-country_filter('LT')
+Luxembourg_part <-country_filter('LU')
+Hungary_part <-country_filter('HU')
+Malta_part <-country_filter('MT')
+Netherlands_part  <-country_filter('NL')
+Austria_part 	<-country_filter('AT')
+Poland_part   <-country_filter('PL')
+Portugal_part	<-country_filter('PT')
+Romania_part		<-country_filter('RO')
+Slovenia_part	<-country_filter('SI')	
+Slovakia_part	<-country_filter('SK')
+Finland_part	<-country_filter('FI')
+Sweden_part	<-country_filter('SE')
+United_Kingdom_part <-country_filter('UK')
+
+eu_states <- c('Belgium','Bulgaria','Czech Republic','Denmark','Germany',
+              'Estonia','Ireland','Greece','Spain','France',
+              'Croatia','Italy','Cyprus','Latvia','Lithuania',
+              'Luxembourg','Hungary','Malta','Netherlands',
+              'Austria','Poland','Portugal','Romania',
+              'Slovenia','Slovakia','Finland','Sweden',
+              'United Kingdom')
+
+## this function takes in a year and data frame and fiters out the 
+## dataframe for only projects that that in the input year
+year_filter <- function(year, in_df){
+  fil_cnt_data <-filter(in_df, like(startDate, year) ) %>%
+    select(rcn, id, acronym, status, programme, topics, frameworkProgramme, title, startDate, 
+           endDate, projectUrl, objective, totalCost,
+           ecMaxContribution, call, fundingScheme,
+           coordinator, coordinatorCountry, participants,
+           participantCountries, subjects) 
+}
+
+uk_fil_datfill <- year_filter('2016', uk_fil)
+
+
+
   
 
 
