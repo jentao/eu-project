@@ -33,10 +33,11 @@ shinyUI(fluidPage(
                         The data in this set contains attributes such as project name, cost, 
                         objective, and participating countries. "),
                       h3("Purpose"),
+                      p("Some questions this app can answer are:"),
                       tags$ul(
-                        tags$li("First list item"), 
-                        tags$li("Second list item"), 
-                        tags$li("Third list item")
+                        tags$li("Does the location of an organization has any effect on the funding of the project?"), 
+                        tags$li("Which countaries are more concerned with  environment focused issues?"), 
+                        tags$li("How does time influence the participation rate?")
                       ),
                       h3("Structure"),
                       tags$ul(
@@ -48,7 +49,11 @@ shinyUI(fluidPage(
                             "By looking at this map, we can tell which countries 
                             are more concerned with environment focused projects.")
                         ), 
-                        tags$li("Third list item")
+                        tags$li(
+                          p("The second tab, ", tags$b("Participation"),
+                            "contains a barplot shows the number of projectes each country
+                            participated in.")
+                        )
                       ),
                       h3("Team"),
                       tags$ul(
@@ -72,20 +77,20 @@ shinyUI(fluidPage(
                       ),
              tabPanel("Participation",
                       sidebarLayout(
-                        sidebarPanel(
+                        sidebarPanel( 
                           selectInput("selYear", "Select Year", 
                                       c("Year 2014" = "year2014", 
                                         "Year 2015" = "year2015",
-                                         "Year 2016" = "year2016",
-                                         "Year 2017" = "year2017",
-                                         "Year 2018" = "year2018",
-                                         "Year 2019" = "year2019"), selected = "Year 2014")
-                                      ),
-                          mainPanel(
+                                        "Year 2016" = "year2016",
+                                        "Year 2017" = "year2017",
+                                        "Year 2018" = "year2018",
+                                        "Year 2019" = "year2019"), selected = "Year 2014")
+                          ),
+                          mainPanel(     # specify content for the "main" column
                             plotOutput("plot1"),
                             textOutput("selected_var")
                           )
+                        )
                       )
              )
-  )
 ))

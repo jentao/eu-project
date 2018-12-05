@@ -8,11 +8,9 @@
 #
 
 library(shiny)
-library(R.utils)
 library(ggplot2)
 library(grid)
 library(rworldmap)
-library(dplyr)
 library(maps)
 library(mapproj)
 library(plotly)
@@ -24,31 +22,13 @@ library(tidyr)
 source("functions.R")
 
 projects <- data.table::fread("data/projects.csv")
-reports <- data.table::fread("data/reports.csv")
-organizations <- data.table::fread("data/organizations.csv")
 
 ## code reference http://egallic.fr/european-map-using-r/
 # Get the world map
 worldMap <- getMap()
 
-# Member States of the European Union
-europeanUnion <- c("Austria","Belgium","Bulgaria","Croatia","Cyprus",
-                   "Czech Rep.","Denmark","Estonia","Finland","France",
-                   "Germany","Greece","Hungary","Ireland","Italy","Latvia",
-                   "Lithuania","Luxembourg","Malta","Netherlands","Poland",
-                   "Portugal","Romania","Slovakia","Slovenia","Spain",
-                   "Sweden","United Kingdom")
-
 # Select data of EU
 europe <- subset(worldMap, NAME %in% europeanUnion)
-
-# country code
-eu_code <- c("AT", "BE", "BG", "HR", "CY",
-             "CZ", "DK", "EE", "FI", "FR",
-             "DE", "EL", "HU", "IE", "IT", "LV",
-             "LT", "LU", "MT", "NL", "PL",
-             "PT", "RO", "SK", "SI", "ES",
-             "SE", "UK")
 
 europeanUnionTable <- data.frame(NAME = europeanUnion, code = eu_code)
 
@@ -122,7 +102,7 @@ shinyServer(function(input, output) {
       geom_bar(fill = 'darkturquoise', stat = "identity") +
       geom_text(aes(label = EUtb$NAME), 
                 vjust = +0.3) + 
-      ylab("Number of Projects a country is participating in") + 
+      ylab("Number of projects a country is participating in") + 
       xlab("Name of EU country") +
       coord_flip()
     
@@ -130,7 +110,7 @@ shinyServer(function(input, output) {
   
   output$selected_var <- renderText({
     dataset <- input$selYear
-    paste("This is a plot of the Number of Projects a country is participating in the", 
+    paste("This is a plot of the number of projects a country is participating in the", 
           substr(input$selYear, 5, 8))
     
   })

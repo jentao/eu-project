@@ -1,0 +1,13 @@
+name: eu-project
+title: eu-project
+username:
+account: jentao
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 604778
+bundleId: 1742309
+url: https://jentao.shinyapps.io/eu-project/
+when: 1544010493.70975
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data/.DS_Store

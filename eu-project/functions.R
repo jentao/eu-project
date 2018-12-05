@@ -1,13 +1,9 @@
 #This is where we are going to put functions to manipulate data
-library(shiny)
 library(R.utils)
 library(data.table)
 library(dplyr)
 
-## setwd("~/Desktop/Info201HW/eu-project/eu-project/data")
-
 data_projects <- data.table::fread("data/projects.csv")
-data_org <-data.table::fread("data/organizations.csv")
 
 ## function that sorts into new dataframe by low carbon/sustainable food projects
 ## does this by taking all project data and filtering by topic for ones that start with
