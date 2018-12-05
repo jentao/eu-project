@@ -12,7 +12,7 @@ library(R.utils)
 
 #install.packages('shinythemes')
 library(shinythemes)
-source("ui.R")
+source("functions.R")
 
 
 projects <- data.table::fread("data/projects.csv")
@@ -25,31 +25,25 @@ shinyServer(function(input, output) {
    
     
   })
-  ## creates the data switch that happens when selecting a year
-  datasetInputYear <- reactive({
-    switch(input$selYear,
-           "Year 2014" = part_year_2014,
-           "Year 2015" = part_year_2015,
-           "Year 2016" = part_year_2016,
-           "Year 2017" = part_year_2017,
-           "Year 2018" = part_year_2018,
-           "Year 2019" = part_year_2019
-           )
-  })
+  
   ## creates the plot shows number of projects a country is participating in 
   output$plot1 <- renderPlot({
-    
-    dataset <- datasetInputYear()
-    ggplot(dataset, aes(x = dataset$eu_states, y = dataset$num_vec)) +
+    yr <- rlang::sym(input$selYear)
+    ggplot(EUtb, 
+           aes(x = NAME, y = !!yr)) +
       geom_bar(fill = 'darkturquoise', stat = "identity") +
-      geom_text(aes(label = dataset$num_vec), 
-                vjust = -0.3) + ylab("Number of Projects a country is participating in") +xlab("Name of EU country")
+      geom_text(aes(label = EUtb$NAME), 
+                vjust = +0.3) + 
+      ylab("Number of Projects a country is participating in") + 
+      xlab("Name of EU country") +
+      coord_flip()
     
   })
   
   output$selected_var <- renderText({
-    dataset <- datasetInputYear()
-    paste("This is a plot of the Number of Projects a country is participating in the", input$selYear)
+    dataset <- input$selYear
+    paste("This is a plot of the Number of Projects a country is participating in the", 
+          substr(input$selYear, 5, 8))
     
   })
   

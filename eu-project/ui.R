@@ -32,18 +32,18 @@ shinyUI(fluidPage(
              tabPanel("Participation",
                       sidebarLayout(
                         sidebarPanel(
-                          
-
-  selectInput("selYear", label = "Select Year", 
-              choices = c("Year 2014", "Year 2015",
-                             "Year 2016","Year 2017",
-                             "Year 2018", "Year 2019"), selected = "Year 2014")
-                          
-                        ),
-                        mainPanel(
-                          plotOutput("plot1", click = "plot_click"),
-                         textOutput("selected_var")
-                        )
+                          selectInput("selYear", "Select Year", 
+                                      c("Year 2014" = "year2014", 
+                                        "Year 2015" = "year2015",
+                                         "Year 2016" = "year2016",
+                                         "Year 2017" = "year2017",
+                                         "Year 2018" = "year2018",
+                                         "Year 2019" = "year2019"), selected = "Year 2014")
+                                      ),
+                          mainPanel(
+                            plotOutput("plot1"),
+                            textOutput("selected_var")
+                          )
                       )
                       
              )
