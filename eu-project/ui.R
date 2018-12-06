@@ -11,6 +11,9 @@ library(shiny)
 library(shinythemes)
 library(leaflet)
 
+source("functions.R")
+
+my_autocomplete_list <- c("John Doe","Ash","Ajay sharma","Ken Chong","Will Smith","Neo")
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   theme = shinytheme("cosmo"),
@@ -64,16 +67,24 @@ shinyUI(fluidPage(
              ),
              tabPanel("Funding by Topic",
                       titlePanel("Topic Funding by Country"),
+                      
                       p("This map shows project funding data by country.
                         The project topic can be selected with the drop down menu.
                         Hovering over a country will display average, max, and min funding
                         in euro."),
-                      selectInput("topic", "Topic:",
-                                  c("Low Carbon" = "LC",
-                                    "Sustainable Food" = "SFS")
-                      ),
-                      
-                      leafletOutput("distPlot")
+                      sidebarLayout(
+                        sidebarPanel( 
+                          selectInput("topic", "Topic:",
+                                       c("Low Carbon" = "LC",
+                                         "Sustainable Food" = "SFS")
+                            ),
+                          selectizeInput("selectinput", label = NULL, choices = europeanUnion)
+                          ),
+                          mainPanel(     # specify content for the "main" column
+                            leafletOutput("distPlot"),
+                            plotOutput("fundingline")
+                          )
+                        )
                       ),
              tabPanel("Participation",
                       sidebarLayout(
@@ -84,11 +95,13 @@ shinyUI(fluidPage(
                                         "Year 2016" = "year2016",
                                         "Year 2017" = "year2017",
                                         "Year 2018" = "year2018",
-                                        "Year 2019" = "year2019"), selected = "Year 2014")
+                                        "Year 2019" = "year2019"), selected = "Year 2014"),
+                          selectizeInput("selectinput2", label = NULL, choices = europeanUnion)
                           ),
                           mainPanel(     # specify content for the "main" column
                             plotOutput("plot1"),
-                            textOutput("selected_var")
+                            textOutput("selected_var"),
+                            plotOutput("projline")
                           )
                         )
                       )

@@ -32,6 +32,7 @@ europe <- subset(worldMap, NAME %in% europeanUnion)
 
 europeanUnionTable <- data.frame(NAME = europeanUnion, code = eu_code)
 
+yearH <- c("2014", "2015", "2016", "2017", "2018", "2019")
 
 shinyServer(function(input, output) {
   
@@ -58,7 +59,7 @@ shinyServer(function(input, output) {
     
     # Create labels when hover over mouse
     labels <- sprintf(
-      "<strong>%s</strong><br/>Average: %e<br/>Max: %e<br/>Min: %e",
+      "<strong>%s</strong><br/>Average: %e €<br/>Max: %e €<br/>Min: %e €",
       valued@data$NAME, valued@data$average,
       valued@data$max, valued@data$min
     ) %>% lapply(htmltools::HTML)
@@ -94,18 +95,49 @@ shinyServer(function(input, output) {
                 position = "bottomright")
   })
   
+  # create line plot of average funding per year
+  output$fundingline <- renderPlot({
+    country <- europeanUnionTable %>% 
+      filter(NAME == input$selectinput)
+    tag_data <- proj_by_tag(input$topic)
+    country_data <- country_filter(country$code, tag_data)
+    
+    ave <- sapply(yearH, yearave, country_data)
+    df <- data.frame(yearH, ave, stringsAsFactors = FALSE)
+    
+    ggplot(data=df, aes(x=yearH, y=ave, group=1)) +
+      geom_line() +
+      geom_point() + 
+      ylab(paste("Average funding of", input$selectinput)) + 
+      xlab("Year")
+  })
+  
   ## creates the plot shows number of projects a country is participating in 
   output$plot1 <- renderPlot({
     yr <- rlang::sym(input$selYear)
     ggplot(EUtb, 
            aes(x = NAME, y = !!yr)) +
       geom_bar(fill = 'darkturquoise', stat = "identity") +
-      geom_text(aes(label = EUtb$NAME), 
+      geom_text(data=EUtb,aes(label = !!yr), 
                 vjust = +0.3) + 
       ylab("Number of projects a country is participating in") + 
       xlab("Name of EU country") +
       coord_flip()
     
+  })
+  
+  # create line plot of average projects per year
+  output$projline <- renderPlot({
+    dfrow <- EUtb %>% 
+      filter(NAME == input$selectinput2)
+    peoj_num <- as.numeric(dfrow[1,3:8])
+    
+    df <- data.frame(yearH, peoj_num, stringsAsFactors = FALSE)
+    ggplot(data=df, aes(x=yearH, y=peoj_num, group=1)) +
+      geom_line() +
+      geom_point() + 
+      ylab(paste("Number of project ", input$selectinput, " participates in")) + 
+      xlab("Year")
   })
   
   output$selected_var <- renderText({
@@ -115,3 +147,7 @@ shinyServer(function(input, output) {
     
   })
 })
+
+dfrow <- EUtb %>% 
+  filter(NAME == "Austria")
+peoj_num <- as.numeric(dfrow[1,3:8])

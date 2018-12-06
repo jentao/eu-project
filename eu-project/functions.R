@@ -40,9 +40,6 @@ country_filter <- function(cnt, data){
             participantCountries, subjects) 
 }
 
-## test i wrote to make sure my filter funciton worked
-#uk_fil<-country_filter('UK', proj_LC)
-
 ## calculations to get some cost data
 ## return a list of avg, max, and min
 cost_summary <- function(data){
@@ -64,9 +61,7 @@ year_filter <- function(year, in_df){
            participantCountries, subjects) 
 }
 
-#uk_fil_datfill <- year_filter('2016', uk_fil)
-#befil_datfill_14 <- year_filter('2014', Belgium_part)
-
+# EU country names
 europeanUnion <- c("Austria","Belgium","Bulgaria","Croatia","Cyprus",
                    "Czech Rep.","Denmark","Estonia","Finland","France",
                    "Germany","Greece","Hungary","Ireland","Italy","Latvia",
@@ -84,6 +79,7 @@ eu_code <- c("AT", "BE", "BG", "HR", "CY",
 
 EUtb <- data.frame(NAME = europeanUnion, code = eu_code)
 
+# This function appends a column of project numberf of the corrisponding year
 test <- function(yr){
   summary <- sapply(EUtb$code, 
                     function(x) nrow(year_filter(yr, country_filter(x, data_projects)))
@@ -93,23 +89,16 @@ test <- function(yr){
   EUtb
 }
 
-t <- sapply(c("2014", "2015", "2016", "2017", "2018", "2019"),
-            test)
-
+# Create a table with num of projects form 2014-2019
 for(i in c("2014", "2015", "2016", "2017", "2018", "2019")){
   EUtb <- test(i)
 }
 
-
-
-  
-
-
-
-
-
-
-
-
-
-
+# return year average funding of chosen topic
+yearave <- function(yr, data){
+  yr_dt <- year_filter(yr, data)
+  if (nrow(yr_dt) == 0) {
+    return(0)
+  }
+  cost_summary(yr_dt)["average"]
+}
