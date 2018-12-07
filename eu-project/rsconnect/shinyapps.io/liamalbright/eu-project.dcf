@@ -1,0 +1,12 @@
+name: eu-project
+title: eu-project
+username:
+account: liamalbright
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 607782
+bundleId: 1747197
+url: https://liamalbright.shinyapps.io/eu-project/
+when: 1544152556.94792
+asMultiple: FALSE
+asStatic: FALSE

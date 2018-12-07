@@ -18,6 +18,10 @@ library(htmlwidgets)
 library(widgetframe)
 library(leaflet)
 library(tidyr)
+library(knitr)
+library(markdown)
+library(rmarkdown)
+
 
 source("functions.R")
 
@@ -136,7 +140,7 @@ shinyServer(function(input, output) {
     ggplot(data=df, aes(x=yearH, y=peoj_num, group=1)) +
       geom_line() +
       geom_point() + 
-      ylab(paste("Number of project ", input$selectinput, " participates in")) + 
+      ylab(paste("Number of projects ", input$selectinput, " participates in")) + 
       xlab("Year")
   })
   
@@ -145,6 +149,10 @@ shinyServer(function(input, output) {
     paste("This is a plot of the number of projects a country is participating in the", 
           substr(input$selYear, 5, 8))
     
+  })
+  
+  output$selected_anly <- renderText({ 
+      paste("<p><i>", max_proj_tle, "</i></p>")
   })
 })
 
